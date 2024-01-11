@@ -7,8 +7,11 @@ import {
   signInFailure,
 } from '../redux/user/userSlice';
 import OAuth from '../components/OAuth';
+import { useEffect } from "react";
 
 export default function SignIn() {  
+  const {currentUser} = useSelector(state => state.user)
+  
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -42,6 +45,13 @@ export default function SignIn() {
       dispatch(signInFailure(error.message));
     }
   };
+
+  useEffect(() => {
+    if(currentUser?._id) {
+      currentUser !== null && navigate('/')
+    }
+  }, [])
+
   return(
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
